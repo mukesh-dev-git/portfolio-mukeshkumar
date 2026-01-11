@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mukeshkumar | Full Stack Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    // Achievement data with your images
+    const destinations = [
+      {
+        id: 1,
+        name: "Datakon'24 Innovation Nexus",
+        location: "Third Prize Winner",
+        description: "Secured the Third Prize at the prestigious Datakon'24 Innovation Nexus event, organized by SRM Institute of Science and Technology (SRMIST)",
+        heroImage: "carosal/datakon-srm.png"
+      },
+      {
+        id: 2,
+        name: "DPII Connect by StartupTN",
+        location: "Top 20+ Teams",
+        description: "DPII Connect event by StartupTN!!! Among the Top 20+ teams, and we were issued the StartupTN Smartcard",
+        heroImage: "carosal/dpiistatup.png"
+      },
+      {
+        id: 3,
+        name: "Tamil Nadu Global Startup Summit 2025",
+        location: "Official Delegate",
+        description: "Honoured to have attended the Tamil Nadu Global Startup Summit 2025 (TNGSS) as a Delegate, representing Powerenv Technologies, organised by StartupTN",
+        heroImage: "carosal/global startup summit.png"
+      },
+      {
+        id: 4,
+        name: "Ideathon Competition",
+        location: "2nd Prize Winner",
+        description: "2nd Prize: For their creative and practical approach",
+        heroImage: "carosal/ideothon.png"
+      },
+      {
+        id: 5,
+        name: "WE WON SIH 2025!",
+        location: "Smart India Hackathon Winner",
+        description: "After months of tremendous effort, sleepless nights, pressure handling, teamwork, and unbreakable cooperation, our team AXEFORTUNE has finally achieved what we dreamed of — Winning Smart India Hackathon 2025!",
+        heroImage: "carosal/sih.png"
+      },
+      {
+        id: 6,
+        name: "TN Police Hackathon 2024",
+        location: "Top 12 Finalist",
+        description: "Incredible opportunity to participate in the TN Police Hackathon 2024, organized by the Cyber Crime Wing, and won top 12",
+        heroImage: "carosal/tamilnadu police haathon.png"
+      },
+      {
+        id: 7,
+        name: "International Hackathon Winner",
+        location: "Among 9000+ Participants",
+        description: "Won international hackathon from almost 9000 participants",
+        heroImage: "carosal/international.png"
+      }
+    ];
+
+    const CARD_INTERVAL = 3000; // 3 seconds
+
+    // SVG Icons
+    const ArrowLeft = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M15 19l-7-7 7-7" />
+      </svg>
+    );
+
+    const ArrowRight = () => (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+    );
+
+    const PlayIcon = () => (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    );
+
+    const PauseIcon = () => (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
+      </svg>
+    );
+
+    // Card Component
+    const Card = ({ destination, isActive }) => (
+      <div className={`card ${isActive ? 'active' : ''}`}>
+        <div 
+          className="card-background" 
+          style={{ backgroundImage: `url(${destination.heroImage})` }}
+        />
+        <div className="card-overlay" />
+        <div className="card-content">
+          <span className="location-tag">{destination.location}</span>
+          <h1 className="destination-name">{destination.name}</h1>
+          <p className="destination-description">{destination.description}</p>
+        </div>
+      </div>
+    );
+
+    // Thumbnail Component
+    const Thumbnail = ({ destination, isActive, onClick, label }) => (
+      <div 
+        className={`thumbnail ${isActive ? 'active' : ''}`} 
+        onClick={onClick}
+      >
+        <img src={destination.heroImage} alt={destination.name} />
+        <div className="thumbnail-overlay">
+          <span className="thumbnail-name">{label}</span>
+        </div>
+      </div>
+    );
+
+    // Main Carousel Component
+    const Carousel = () => {
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(true);
+      const [progress, setProgress] = useState(0);
+
+      // Go to next card
+      const goToNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % destinations.length);
+        setProgress(0);
+      }, []);
+
+      // Go to previous card
+      const goToPrev = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + destinations.length) % destinations.length);
+        setProgress(0);
+      }, []);
+
+      // Go to specific card
+      const goToCard = useCallback((index) => {
+        setCurrentIndex(index);
+        setProgress(0);
+        setIsPlaying(false);
+        setTimeout(() => setIsPlaying(true), 5000);
+      }, []);
+
+      // Handle manual navigation
+      const handleManualNav = useCallback((action) => {
+        action();
+        setIsPlaying(false);
+        setTimeout(() => setIsPlaying(true), 5000);
+      }, []);
+
+      // Auto-rotation timer
+      useEffect(() => {
+        if (!isPlaying) return;
+
+        const progressTimer = setInterval(() => {
+          setProgress((prev) => {
+            if (prev >= 100) {
+              goToNext();
+              return 0;
+            }
+            return prev + (100 / (CARD_INTERVAL / 100));
+          });
+        }, 100);
+
+        return () => clearInterval(progressTimer);
+      }, [isPlaying, goToNext]);
+
+      // Keyboard navigation
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowLeft') handleManualNav(goToPrev);
+          if (e.key === 'ArrowRight') handleManualNav(goToNext);
+          if (e.key === ' ') {
+            e.preventDefault();
+            setIsPlaying((prev) => !prev);
+          }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [goToNext, goToPrev, handleManualNav]);
+
+      // Get 4 thumbnails to display
+      const getThumbnailIndices = () => {
+        const indices = [];
+        for (let i = 0; i < 4; i++) {
+          indices.push((currentIndex + i) % destinations.length);
+        }
+        return indices;
+      };
+
+      const thumbnailIndices = getThumbnailIndices();
+
+      const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+
+      return (
+        <div className="carousel-container" id="home">
+          {/* Header */}
+          <header className="header">
+            <div className="logo" onClick={() => scrollToSection('home')}>MUKESHKUMAR</div>
+            <nav className="nav-menu">
+              <span className="nav-item" onClick={() => scrollToSection('home')}>Home</span>
+              <span className="nav-item" onClick={() => scrollToSection('about')}>About</span>
+              <span className="nav-item" onClick={() => scrollToSection('skills')}>Skills</span>
+              <span className="nav-item" onClick={() => scrollToSection('experience')}>Experience</span>
+              <span className="nav-item" onClick={() => scrollToSection('achievements')}>Achievements</span>
+              <span className="nav-item" onClick={() => scrollToSection('courses')}>Courses</span>
+              <span className="nav-item" onClick={() => scrollToSection('contact')}>Contact</span>
+            </nav>
+          </header>
+
+          {/* Cards */}
+          {destinations.map((destination, index) => (
+            <Card 
+              key={destination.id} 
+              destination={destination} 
+              isActive={index === currentIndex}
+            />
+          ))}
+
+          {/* Thumbnail Grid */}
+          <div className="thumbnail-grid">
+            {thumbnailIndices.map((destIndex, i) => (
+              <Thumbnail
+                key={`thumb-${destIndex}-${i}`}
+                destination={destinations[destIndex]}
+                isActive={destIndex === currentIndex}
+                onClick={() => goToCard(destIndex)}
+                label={destinations[destIndex].name.split(' ')[0].toUpperCase()}
+              />
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="nav-arrows">
+            <button 
+              className="nav-arrow" 
+              onClick={() => handleManualNav(goToPrev)}
+              aria-label="Previous"
+            >
+              <ArrowLeft />
+            </button>
+            <button 
+              className="nav-arrow" 
+              onClick={() => handleManualNav(goToNext)}
+              aria-label="Next"
+            >
+              <ArrowRight />
+            </button>
+          </div>
+
+          {/* Play/Pause Button */}
+          <button 
+            className="play-pause-btn" 
+            onClick={() => setIsPlaying((prev) => !prev)}
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </button>
+
+          {/* Progress Dots */}
+          <div className="progress-container">
+            {destinations.map((_, index) => (
+              <div
+                key={index}
+                className={`progress-dot ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => goToCard(index)}
+              />
+            ))}
+          </div>
+
+          {/* Card Counter */}
+          <div className="card-counter">
+            {currentIndex + 1}
+          </div>
+
+          {/* Progress Bar */}
+          <div className="progress-bar-container">
+            <div 
+              className="progress-bar" 
+              style={{ width: isPlaying ? `${progress}%` : '0%' }}
+            />
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="scroll-indicator" onClick={() => scrollToSection('about')}>
+            <span>SCROLL TO EXPLORE</span>
+            <i className="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      );
+    };
+
+    // Achievement cards data
+    const achievementCards = [
+      { id: 1, image: "hackathon/sih-winner-2025.jpeg", title: "SIH 2025 Winner", subtitle: "Smart India Hackathon" },
+      { id: 2, image: "hackathon/internation-top 100-hackhazard.jpeg", title: "International Top 100", subtitle: "HackHazard Competition" },
+      { id: 3, image: "hackathon/3rd prize=srm-datakon.jpeg", title: "3rd Prize", subtitle: "SRM Datakon'24" },
+      { id: 4, image: "hackathon/2nd-prize-ideathon-st.joseph college of engineering.jpeg", title: "2nd Prize Ideathon", subtitle: "St. Joseph College" },
+      { id: 5, image: "hackathon/thoothukudi-police-hacathon.jpeg", title: "TN Police Hackathon", subtitle: "Top 12 Finalist" },
+      { id: 6, image: "hackathon/dpii-startupTN-got startup TN-card.jpg", title: "DPII StartupTN", subtitle: "Top 20+ Teams" },
+      { id: 7, image: "hackathon/global startup summit-coimbatore.jpg", title: "Global Startup Summit", subtitle: "Official Delegate" },
+      { id: 8, image: "hackathon/first place-coding club.jpeg", title: "1st Place", subtitle: "Coding Club" },
+      { id: 9, image: "hackathon/google-solution-challenge.jpeg", title: "Google Solution Challenge", subtitle: "Participant" },
+      { id: 10, image: "hackathon/hackz24-nationalfainalist.jpeg", title: "HackZ24", subtitle: "National Finalist" },
+      { id: 11, image: "hackathon/inno-blitz.jpeg", title: "Inno-Blitz", subtitle: "Competition" },
+      { id: 12, image: "hackathon/KiC-START Innovation Launchpad-kongunadu-finalist.jpg", title: "KiC-START Launchpad", subtitle: "Kongunadu Finalist" },
+      { id: 13, image: "hackathon/nation finalist-vertex-innovate.jpeg", title: "Vertex Innovate", subtitle: "National Finalist" },
+      { id: 14, image: "hackathon/second place-coding clip.jpeg", title: "2nd Place", subtitle: "Coding Clip" },
+      { id: 15, image: "hackathon/tech-fusion-cresent.jpg", title: "Tech Fusion", subtitle: "Crescent" },
+      { id: 16, image: "hackathon/thalir-srm-finalist.jpg", title: "Thalir SRM", subtitle: "Finalist" }
+    ];
+
+    // Projects data
+    const projects = [
+      { id: 1, title: "CryBIT", subtitle: "Telegram-based Scam Detection", description: "Built with Python, Telethon, MongoDB, and NLP libraries for spam and phishing detection.", tech: ["Python", "Telethon", "MongoDB", "NLP"] },
+      { id: 2, title: "AdShield", subtitle: "AI-Powered Scam Analyzer", description: "Utilized web scraping (Selenium/BeautifulSoup), computer vision, and NLP with Python and ML models.", tech: ["Python", "Selenium", "BeautifulSoup", "CV", "NLP"] },
+      { id: 3, title: "SmartPark", subtitle: "Intelligent Parking Management", description: "Developed using React, Node.js, Express, MongoDB, OpenCV API for LPR.", tech: ["React", "Node.js", "Express", "MongoDB", "OpenCV"] },
+      { id: 4, title: "GroqGazer", subtitle: "Web Intelligence Explorer", description: "Integrated GrokAI API with Python, Streamlit, and PocketGroq for dynamic data insights.", tech: ["Python", "Streamlit", "GrokAI API"] },
+      { id: 5, title: "PowrMET", subtitle: "Smart Energy Meter", description: "Developed LoRaWAN smart meter. Represented at TNGSS, selected among 500+ applicants.", tech: ["LoRaWAN", "IoT", "Embedded Systems"] },
+      { id: 6, title: "MutualChain", subtitle: "DeFi Insurance Platform", description: "Built using Next.js, Blockchain, AI/ML, and smart contracts for trustless coverage.", tech: ["Next.js", "Blockchain", "AI/ML", "Smart Contracts"] }
+    ];
+
+    // Skills data
+    const skillCategories = [
+      { title: "Full Stack Development", skills: ["HTML & CSS", "JavaScript", "React", "Node.js", "Express", "MongoDB", "Firebase", "TailWind CSS", "Next.js", "REST APIs"] },
+      { title: "Programming Languages", skills: ["Python", "C", "Java"] },
+      { title: "AI & Machine Learning", skills: ["TensorFlow", "OpenCV", "BERT", "CNN & LSTM", "Random Forest", "Tesseract OCR"] },
+      { title: "Tools & Technologies", skills: ["Git & GitHub", "VS Code", "Postman", "Blockchain", "LoRaWAN", "WebSocket", "Streamlit", "Three.js", "Android Studio"] },
+      { title: "Soft Skills", skills: ["Problem Solving", "Critical Thinking", "Communication", "Team Leadership", "Innovation", "Project Management"] }
+    ];
+
+    // Courses data
+    const courses = {
+      coursera: [
+        { title: "Introduction to Front End Development", file: "coursera/introduction to front end development.pdf" },
+        { title: "Programming with JavaScript", file: "coursera/programming with javascript.pdf" },
+        { title: "Version Control", file: "coursera/version control.pdf" }
+      ],
+      springboard: [
+        { title: "Java Programming Fundamentals", file: "springboard/java programming fundamentals.pdf" },
+        { title: "CSS Certificate", file: "springboard/mukeshkumar_css_certificate.pdf" },
+        { title: "Frontend Developer Certificate", file: "springboard/mukeshkumar_frontendDeveloper_certificate.pdf" },
+        { title: "HTML5 Certificate", file: "springboard/MukeshKumar_HTML5_certificate.pdf" },
+        { title: "JavaScript Certificate", file: "springboard/mukeshkumar_javascript_certificate.pdf" },
+        { title: "Networking & Web Technology", file: "springboard/mukeshkumar_networkingAndWebTechnology_certificate.pdf" }
+      ]
+    };
+
+    // About Section
+    const AboutSection = () => (
+      <section id="about" className="section about-section">
+        <div className="section-container">
+          <div className="about-grid">
+            <div className="about-left">
+              <h2 className="section-title">About Me</h2>
+              <div className="title-underline"></div>
+              <p className="about-text">I'm a passionate Full Stack Developer with expertise in building innovative applications focused on AI, cybersecurity, and smart systems. Currently pursuing my degree while actively contributing to the tech community through hackathons and startup ventures.</p>
+              <p className="about-text">As the Co-Founder of Powerenv Technologies, I've had the privilege of representing my startup at the Tamil Nadu Global Startup Summit (TNGSS) and winning Smart India Hackathon 2025.</p>
+              <div className="about-details">
+                <div className="detail-item"><span className="detail-label">Name</span><span className="detail-value">Mukeshkumar M</span></div>
+                <div className="detail-item"><span className="detail-label">Role</span><span className="detail-value">Full Stack Developer</span></div>
+                <div className="detail-item"><span className="detail-label">Experience</span><span className="detail-value">15+ Hackathons Won</span></div>
+              </div>
+            </div>
+            <div className="about-right">
+              <div className="about-image-wrapper">
+                <img src="myself.png" alt="Mukeshkumar" className="about-image" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // Skills Section
+    const SkillsSection = () => (
+      <section id="skills" className="section skills-section">
+        <div className="section-container">
+          <h2 className="section-title center">Skills & Expertise</h2>
+          <div className="title-underline center"></div>
+          <div className="skills-grid">
+            {skillCategories.map((category, index) => (
+              <div key={index} className="skill-category">
+                <h3 className="skill-category-title">{category.title}</h3>
+                <div className="skill-tags">
+                  {category.skills.map((skill, skillIndex) => (
+                    <span key={skillIndex} className="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    // Experience Section
+    const ExperienceSection = () => (
+      <section id="experience" className="section experience-section">
+        <div className="section-container">
+          <h2 className="section-title">Experience</h2>
+          <div className="title-underline"></div>
+          <div className="experience-grid">
+            <div className="experience-card featured">
+              <div className="exp-header"><span className="exp-date">March 2024 – Present</span><span className="exp-badge">Current</span></div>
+              <h3 className="exp-title">Co-Founder & Lead Software Developer</h3>
+              <h4 className="exp-company">Powerenv Technologies</h4>
+              <p className="exp-description">Developed LoRaWAN smart meter technology. Represented as founder at Tamil Nadu Global Startup Summit (TNGSS), selected among 500+ applicants.</p>
+              <div className="exp-tags"><span>LoRaWAN</span><span>IoT</span><span>Smart Meters</span><span>Startup</span></div>
+            </div>
+            <div className="experience-card">
+              <div className="exp-header"><span className="exp-date">2024</span></div>
+              <h3 className="exp-title">Smart India Hackathon 2025 Winner</h3>
+              <h4 className="exp-company">Team AXEFORTUNE</h4>
+              <p className="exp-description">After months of tremendous effort, sleepless nights, and unbreakable teamwork, our team achieved the dream of winning Smart India Hackathon 2025.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // Achievements Section
+    const AchievementsSection = () => (
+      <section id="achievements" className="section achievements-section">
+        <div className="section-container">
+          <h2 className="section-title center">Achievements</h2>
+          <div className="title-underline center"></div>
+          <p className="section-subtitle">Hackathons, Competitions & Recognition</p>
+          <div className="achievements-grid">
+            {achievementCards.map((achievement) => (
+              <div key={achievement.id} className="achievement-card">
+                <div className="achievement-image"><img src={achievement.image} alt={achievement.title} /><div className="achievement-overlay"><i className="fas fa-trophy"></i></div></div>
+                <div className="achievement-info"><h4>{achievement.title}</h4><p>{achievement.subtitle}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    // Projects Section
+    const ProjectsSection = () => (
+      <section id="projects" className="section projects-section">
+        <div className="section-container">
+          <h2 className="section-title">Projects</h2>
+          <div className="title-underline"></div>
+          <p className="section-subtitle left">Developed and deployed full-stack applications focused on AI, cybersecurity, and smart systems</p>
+          <div className="projects-grid">
+            {projects.map((project) => (
+              <div key={project.id} className="project-card">
+                <div className="project-icon"><i className="fas fa-code"></i></div>
+                <h3 className="project-title">{project.title}</h3>
+                <span className="project-subtitle">{project.subtitle}</span>
+                <p className="project-description">{project.description}</p>
+                <div className="project-tech">{project.tech.map((tech, index) => (<span key={index} className="tech-tag">{tech}</span>))}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    // Courses Section
+    const CoursesSection = () => (
+      <section id="courses" className="section courses-section">
+        <div className="section-container">
+          <h2 className="section-title center">Certifications & Courses</h2>
+          <div className="title-underline center"></div>
+          <div className="courses-container">
+            <div className="course-category">
+              <div className="category-header"><div className="platform-icon coursera"><i className="fas fa-graduation-cap"></i></div><h3>Coursera</h3></div>
+              <div className="courses-list">
+                {courses.coursera.map((course, index) => (
+                  <a key={index} href={course.file} target="_blank" rel="noopener noreferrer" className="course-item"><i className="fas fa-certificate"></i><span>{course.title}</span><i className="fas fa-external-link-alt"></i></a>
+                ))}
+              </div>
+            </div>
+            <div className="course-category">
+              <div className="category-header"><div className="platform-icon springboard">SB</div><h3>Springboard</h3></div>
+              <div className="courses-list">
+                {courses.springboard.map((course, index) => (
+                  <a key={index} href={course.file} target="_blank" rel="noopener noreferrer" className="course-item"><i className="fas fa-certificate"></i><span>{course.title}</span><i className="fas fa-external-link-alt"></i></a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // Contact Section
+    const ContactSection = () => (
+      <section id="contact" className="section contact-section">
+        <div className="section-container">
+          <h2 className="section-title-light center">Thank You</h2>
+          <div className="title-underline center light"></div>
+          <p className="contact-subtitle">Let's Connect & Build Something Amazing Together</p>
+          <div className="contact-grid">
+            <div className="contact-card"><i className="fas fa-phone"></i><h4>Phone</h4><p>+91 6380568055</p></div>
+            <div className="contact-card"><i className="fas fa-envelope"></i><h4>Email</h4><p>mukeshkumar.cse24@gmail.com</p></div>
+            <div className="contact-card"><a href="https://www.linkedin.com/in/mukeshkumar-m-582a07326/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i><h4>LinkedIn</h4><p>Connect with me</p></a></div>
+            <div className="contact-card"><a href="https://github.com/mukesh-dev-git" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i><h4>GitHub</h4><p>View my projects</p></a></div>
+          </div>
+          <div className="footer-text"><p>© 2025 Mukeshkumar. All Rights Reserved.</p></div>
+        </div>
+      </section>
+    );
+
+    // Main App Component
+    const App = () => (
+      <>
+        <Carousel />
+        <AboutSection />
+        <SkillsSection />
+        <ExperienceSection />
+        <AchievementsSection />
+        <ProjectsSection />
+        <CoursesSection />
+        <ContactSection />
+      </>
+    );
+
+    // Render the app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
