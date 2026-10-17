@@ -192,7 +192,7 @@ export default function Certifications() {
                 </Fragment>
               );
             }
-            const [from, to] = palettes[i % palettes.length];
+            const [from, to] = c.accent ?? palettes[i % palettes.length];
             const hot = hovered === c.title;
             return (
               <motion.a
@@ -225,7 +225,7 @@ export default function Certifications() {
                     <img src="/assets/figma/arrow-up-right-card.svg" alt="" />
                   </motion.span>
                 </div>
-                <Meta cert={c} tag="Certificate" />
+                <Meta cert={c} tag={c.kind ?? "Certificate"} />
                 <h3>{c.title}</h3>
               </motion.a>
             );

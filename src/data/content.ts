@@ -201,9 +201,26 @@ export const marquee = [
 ];
 
 export type Course = { title: string; file?: string };
-export type Cert = { title: string; issuer: string; file: string; kind?: string; date?: string; verify?: string; courses?: Course[] };
+export type Cert = {
+  title: string;
+  issuer: string;
+  file: string;
+  kind?: string;
+  date?: string;
+  verify?: string;
+  accent?: [string, string];
+  courses?: Course[];
+};
 
 export const certifications: Cert[] = [
+  {
+    title: "Agentic AI Certified Foundations Associate",
+    issuer: "Oracle",
+    kind: "Certification",
+    date: "Oct 2026",
+    file: "/oracle/agentic ai certified foundations associate.pdf",
+    accent: ["#C74634", "#F28B6C"],
+  },
   {
     title: "Meta Front-End Developer",
     issuer: "Coursera · Meta",
