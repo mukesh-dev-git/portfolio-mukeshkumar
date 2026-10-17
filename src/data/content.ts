@@ -200,12 +200,29 @@ export const marquee = [
   "AWS SageMaker",
 ];
 
-export type Cert = { title: string; issuer: string; file: string };
+export type Course = { title: string; file?: string };
+export type Cert = { title: string; issuer: string; file: string; kind?: string; date?: string; verify?: string; courses?: Course[] };
 
 export const certifications: Cert[] = [
-  { title: "Programming with JavaScript", issuer: "Coursera · Meta", file: "/coursera/programming with javascript.pdf" },
-  { title: "Introduction to Front-End Development", issuer: "Coursera · Meta", file: "/coursera/introduction to front end development.pdf" },
-  { title: "Version Control", issuer: "Coursera · Meta", file: "/coursera/version control.pdf" },
+  {
+    title: "Meta Front-End Developer",
+    issuer: "Coursera · Meta",
+    kind: "Professional Certificate",
+    date: "Mar 2026",
+    file: "/coursera/meta front-end developer professional certificate.pdf",
+    verify: "https://coursera.org/verify/professional-cert/WSZY2108I7D6",
+    courses: [
+      { title: "Introduction to Front-End Development", file: "/coursera/introduction to front end development.pdf" },
+      { title: "Programming with JavaScript", file: "/coursera/programming with javascript.pdf" },
+      { title: "Version Control", file: "/coursera/version control.pdf" },
+      { title: "HTML and CSS in depth" },
+      { title: "React Basics" },
+      { title: "Advanced React" },
+      { title: "Principles of UX/UI Design" },
+      { title: "Front-End Developer Capstone" },
+      { title: "Coding Interview Preparation" },
+    ],
+  },
   { title: "Front-End Developer", issuer: "Infosys Springboard", file: "/springboard/mukeshkumar_frontendDeveloper_certificate.pdf" },
   { title: "Java Programming Fundamentals", issuer: "Infosys Springboard", file: "/springboard/java programming fundamentals.pdf" },
   { title: "Networking & Web Technology", issuer: "Infosys Springboard", file: "/springboard/mukeshkumar_networkingAndWebTechnology_certificate.pdf" },

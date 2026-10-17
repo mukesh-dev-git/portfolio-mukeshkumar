@@ -2,11 +2,11 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:171717,100:FD853A&height=200&section=header&text=Mukeshkumar%20%C2%B7%20Portfolio&fontSize=44&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=AI%2FML%20Engineer&descAlignY=58&descSize=18" width="100%" alt="Portfolio banner"/>
 
-<a href="https://mukeshkumar-portfolio.vercel.app"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1200&color=FD853A&center=true&vCenter=true&width=720&lines=AI%2FML%2C+LLM+agents%2C+embedded+and+full-stack;Projects%2C+hackathon+wins+and+certifications;React+%2B+Vite+%2B+Framer+Motion" alt="Typing summary"/></a>
+<a href="https://mukesh.chillflareinnovations.com"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1200&color=FD853A&center=true&vCenter=true&width=720&lines=AI%2FML%2C+LLM+agents%2C+embedded+and+full-stack;Projects%2C+hackathon+wins+and+certifications;React+%2B+Vite+%2B+Framer+Motion" alt="Typing summary"/></a>
 
 <br/>
 
-[![Live](https://img.shields.io/badge/Live-mukeshkumar--portfolio.vercel.app-000000?logo=vercel&logoColor=white)](https://mukeshkumar-portfolio.vercel.app)
+[![Live](https://img.shields.io/badge/Live-mukesh.chillflareinnovations.com-000000?logo=vercel&logoColor=white)](https://mukesh.chillflareinnovations.com)
 [![React](https://img.shields.io/badge/React%2019-61DAFB?logo=react&logoColor=black)](package.json)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](vite.config.ts)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
@@ -21,7 +21,7 @@
 
 ## <img src="https://api.iconify.design/lucide/user.svg?color=%23FD853A" width="26" align="top" alt=""/> Overview
 
-My personal portfolio, live at **[mukeshkumar-portfolio.vercel.app](https://mukeshkumar-portfolio.vercel.app)**. The layout and motion follow JCREA's "Product Designer Portfolio" Figma Community template; the content comes from my 2026-27 resume.
+My personal portfolio, live at **[mukesh.chillflareinnovations.com](https://mukesh.chillflareinnovations.com)** (also [mukeshkumar-portfolio.vercel.app](https://mukeshkumar-portfolio.vercel.app)), as the founder page under Chillflare Innovations. The layout and motion follow JCREA's "Product Designer Portfolio" Figma Community template; the content comes from my 2026-27 resume.
 
 | Section | Content |
 |---|---|
@@ -32,7 +32,7 @@ My personal portfolio, live at **[mukeshkumar-portfolio.vercel.app](https://muke
 | Projects | Filterable project cards with a detail panel and GitHub links for public repos |
 | Achievements | Auto-scrolling strip of hackathon results |
 | Contact | Email form (opens your mail client) |
-| Certifications | Coursera and Infosys Springboard certificates (PDF) |
+| Certifications | Meta Front-End Developer professional certificate as a folder of its 9 courses, plus Infosys Springboard certificates (PDF) |
 
 ## <img src="https://api.iconify.design/lucide/sparkles.svg?color=%23FD853A" width="26" align="top" alt=""/> Animations
 
