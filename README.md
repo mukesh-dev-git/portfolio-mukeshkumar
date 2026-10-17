@@ -1,94 +1,115 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:312E81,100:EC4899&height=200&section=header&text=Mukeshkumar%20%C2%B7%20Portfolio&fontSize=44&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=Full%20Stack%20Developer&descAlignY=58&descSize=18" width="100%" alt="Portfolio banner"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:171717,100:FD853A&height=200&section=header&text=Mukeshkumar%20%C2%B7%20Portfolio&fontSize=44&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=AI%2FML%20Engineer&descAlignY=58&descSize=18" width="100%" alt="Portfolio banner"/>
 
-<a href="https://mukeshkumar-portfolio.vercel.app"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1200&color=EC4899&center=true&vCenter=true&width=720&lines=About%2C+skills+and+experience;Hackathon+wins+in+an+auto-sliding+carousel;Projects+and+certifications;Single+HTML+page+%C2%B7+React+from+a+CDN" alt="Typing summary"/></a>
+<a href="https://mukeshkumar-portfolio.vercel.app"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1200&color=FD853A&center=true&vCenter=true&width=720&lines=AI%2FML%2C+LLM+agents%2C+embedded+and+full-stack;Projects%2C+hackathon+wins+and+certifications;React+%2B+Vite+%2B+Framer+Motion" alt="Typing summary"/></a>
 
 <br/>
 
 [![Live](https://img.shields.io/badge/Live-mukeshkumar--portfolio.vercel.app-000000?logo=vercel&logoColor=white)](https://mukeshkumar-portfolio.vercel.app)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](index.html)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](styles.css)
-[![React](https://img.shields.io/badge/React%2018-CDN-61DAFB?logo=react&logoColor=black)](index.html)
+[![React](https://img.shields.io/badge/React%2019-61DAFB?logo=react&logoColor=black)](package.json)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](vite.config.ts)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
+[![Framer Motion](https://img.shields.io/badge/Framer%20Motion-0055FF?logo=framer&logoColor=white)](src/motion.ts)
 <br/>
-[![Status](https://img.shields.io/badge/Status-Live%20%C2%B7%20Jan%202026%20content-2ea44f)](#-status)
+[![Status](https://img.shields.io/badge/Status-Live%20%C2%B7%20Oct%202026%20content-2ea44f)](#-status)
 [![License](https://img.shields.io/badge/License-MIT%20(code)-blue)](LICENSE)
 
 </div>
 
 ---
 
-## <img src="https://api.iconify.design/lucide/user.svg?color=%23EC4899" width="26" align="top" alt=""/> Overview
+## <img src="https://api.iconify.design/lucide/user.svg?color=%23FD853A" width="26" align="top" alt=""/> Overview
 
-My personal portfolio, live at **[mukeshkumar-portfolio.vercel.app](https://mukeshkumar-portfolio.vercel.app)**. It is one static page with no build step: `index.html` loads React 18 and Babel from unpkg and renders the sections in the browser.
+My personal portfolio, live at **[mukeshkumar-portfolio.vercel.app](https://mukeshkumar-portfolio.vercel.app)**. The layout and motion follow JCREA's "Product Designer Portfolio" Figma Community template; the content comes from my 2026-27 resume.
 
 | Section | Content |
 |---|---|
-| About | Introduction and photo (`myself.png`) |
-| Skills & Expertise | Technology groups |
-| Experience | Co-Founder & Lead Software Developer at Powerenv Technologies (smart meters, March 2024 onward) |
-| Achievements | Auto-sliding carousel of hackathon results (`carosal/`), with certificates and photos in `hackathon/` |
-| Projects | Selected projects with short descriptions (no links yet) |
-| Certifications & Courses | Coursera and Infosys Springboard certificates (`coursera/`, `springboard/` PDFs) |
-| Contact | "Thank You" section with GitHub and LinkedIn links |
+| Hero | Name, role, SIH 2025 badge, photo on an animated semicircle |
+| What I Do | AI/ML, LLMs & Agents, Embedded & IoT, Full-Stack & Cloud |
+| Experience | Chillflare Innovations (Founder), IQMaths (SWE Intern), St. Joseph's College of Engineering |
+| Why Hire Me | Summary with animated counters (Amazon ML Challenge rank, SIH win) |
+| Projects | Filterable project cards with a detail panel and GitHub links for public repos |
+| Achievements | Auto-scrolling strip of hackathon results |
+| Contact | Email form (opens your mail client) |
+| Certifications | Coursera and Infosys Springboard certificates (PDF) |
 
-## <img src="https://api.iconify.design/lucide/network.svg?color=%23EC4899" width="26" align="top" alt=""/> How It Works
+## <img src="https://api.iconify.design/lucide/sparkles.svg?color=%23FD853A" width="26" align="top" alt=""/> Animations
+
+The Figma prototype's easing curves are ported to Framer Motion in [`src/motion.ts`](src/motion.ts):
+
+| Figma | Used for |
+|---|---|
+| Ease-in-and-out back `[0.68,-0.6,0.32,1.6]` | Hover morphs (service cards, buttons) |
+| Ease-out back `[0.34,1.56,0.64,1]` | Click morphs |
+| Gentle spring (100 / 15) | Shared-layout pills: nav, hero CTA, project filters |
+| Quick spring (300 / 20) | Small icon motion |
+
+Sections reveal on scroll, the timeline draws itself, the achievements strip loops and pauses on hover, and everything respects `prefers-reduced-motion`.
+
+## <img src="https://api.iconify.design/lucide/network.svg?color=%23FD853A" width="26" align="top" alt=""/> How It Works
 
 ```mermaid
 flowchart LR
-    B[Browser] --> V[Vercel static hosting]
-    V --> H[index.html + styles.css]
-    H --> R[React 18 + Babel standalone<br/>from unpkg]
-    R --> S[Sections and carousel<br/>rendered client-side]
-    H --> A[Images and certificate PDFs<br/>served from the repo]
+    C[src/data/content.ts] --> R[React components]
+    M[src/motion.ts] --> R
+    R --> V[Vite build]
+    V --> D[dist/]
+    D --> H[Vercel]
+    P[public/<br/>images, PDFs, Figma assets] --> V
 
-    classDef host fill:#000000,stroke:#EC4899,color:#fff
-    classDef page fill:#EEEDFE,stroke:#7F77DD,color:#222
-    class V host
-    class B,H,R,S,A page
+    classDef host fill:#171717,stroke:#FD853A,color:#fff
+    classDef page fill:#FFF1E8,stroke:#FD853A,color:#222
+    class H host
+    class C,M,R,V,D,P page
 ```
 
-## <img src="https://api.iconify.design/lucide/zap.svg?color=%23EC4899" width="26" align="top" alt=""/> Run Locally
-
-No install needed; serve the folder with any static server:
+## <img src="https://api.iconify.design/lucide/zap.svg?color=%23FD853A" width="26" align="top" alt=""/> Run Locally
 
 ```bash
 git clone https://github.com/mukesh-dev-git/portfolio-mukeshkumar.git
 cd portfolio-mukeshkumar
-npx serve .
+npm install
+npm run dev
 ```
 
-To update the site, edit `index.html` / `styles.css`, add images or PDFs to the matching folder, and push; Vercel redeploys from `main`.
+`npm run build` type-checks and writes `dist/`. To change text, links or projects, edit [`src/data/content.ts`](src/data/content.ts) and push; Vercel redeploys from `main` and builds a preview for every other branch.
 
-## <img src="https://api.iconify.design/lucide/folder-tree.svg?color=%23EC4899" width="26" align="top" alt=""/> Project Structure
+## <img src="https://api.iconify.design/lucide/folder-tree.svg?color=%23FD853A" width="26" align="top" alt=""/> Project Structure
 
 ```
 portfolio-mukeshkumar/
-├── index.html      # all sections as React components (type="text/babel")
-├── styles.css
-├── script.js       # placeholder, logic lives in index.html
-├── myself.png
-├── carosal/        # carousel images for the achievements slider
-├── hackathon/      # hackathon certificates and photos
-├── coursera/       # course certificates (PDF)
-└── springboard/    # Infosys Springboard certificates (PDF)
+├── index.html
+├── src/
+│   ├── App.tsx
+│   ├── motion.ts          # easing and variants from the Figma prototype
+│   ├── styles.css         # design tokens and section styles
+│   ├── data/content.ts    # all copy, projects, achievements, certificates
+│   └── components/        # Navbar, Hero, Services, Experience, WhyMe, Projects, ...
+├── public/
+│   ├── myself.png
+│   ├── assets/figma/      # template shapes, textures and icons
+│   ├── carosal/           # achievement photos
+│   ├── hackathon/         # hackathon certificates and photos
+│   ├── coursera/          # course certificates (PDF)
+│   └── springboard/       # Infosys Springboard certificates (PDF)
+└── vercel.json
 ```
 
-## <img src="https://api.iconify.design/lucide/gauge.svg?color=%23EC4899" width="26" align="top" alt=""/> Status
+## <img src="https://api.iconify.design/lucide/gauge.svg?color=%23FD853A" width="26" align="top" alt=""/> Status
 
-Live and online. The content was last updated on 11 January 2026, so achievements and projects from later in 2026 are not on the page yet.
+Live. Rebuilt in October 2026 from a single CDN-React page to React + Vite with the new design. The previous version is in the git history.
 
-Notes for the next update:
-- Babel compiles the JSX in the browser on every visit; a small Vite build would load faster
-- Several images in `carosal/` are over 1 MB; compressing them (WebP) would speed up the first load
-- The folder is spelled `carosal/`; renaming it means updating the paths in `index.html`
+Next updates:
+- Swap in a cut-out photo to match the template's hero
+- Add photos for the Amazon ML, HAC'KP and YESummit achievement cards
 
-## <img src="https://api.iconify.design/lucide/scale.svg?color=%23EC4899" width="26" align="top" alt=""/> License
+## <img src="https://api.iconify.design/lucide/scale.svg?color=%23FD853A" width="26" align="top" alt=""/> License
 
-The code (`index.html`, `styles.css`, `script.js`) is MIT, see [LICENSE](LICENSE). My photos, certificates and personal content are not covered by that license; certificates belong to their issuers.
+The code is MIT, see [LICENSE](LICENSE). My photos, certificates and personal content are not covered by that license; certificates belong to their issuers. The visual design is based on JCREA's portfolio template from the Figma Community.
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:EC4899,100:312E81&height=110&section=footer&animation=fadeIn" width="100%" alt=""/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:FD853A,100:171717&height=110&section=footer&animation=fadeIn" width="100%" alt=""/>
 
 </div>
