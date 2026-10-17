@@ -1,7 +1,10 @@
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState, type MouseEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { certifications, type Cert } from "../data/content";
 import { clickMorph, easeOutBack, fadeUp, gentle, hoverMorph, inView, stagger } from "../motion";
+import CertViewer, { type ViewerDoc } from "./CertViewer";
+
+type OnView = (e: MouseEvent, file: string, title: string) => void;
 
 const palettes = [
   ["#7C3AED", "#C4B5FD"],
@@ -80,7 +83,7 @@ function FolderCard({ cert, index, open, onToggle }: { cert: Cert; index: number
   );
 }
 
-function FolderPanel({ cert }: { cert: Cert }) {
+function FolderPanel({ cert, onView }: { cert: Cert; onView: OnView }) {
   return (
     <motion.div
       className="folder-panel"
@@ -99,7 +102,7 @@ function FolderPanel({ cert }: { cert: Cert }) {
             <h3>{cert.title}</h3>
           </div>
           <div className="folder-actions">
-            <a className="btn btn-primary" href={cert.file} target="_blank" rel="noreferrer">
+            <a className="btn btn-primary" href={cert.file} target="_blank" rel="noreferrer" onClick={(e) => onView(e, cert.file, cert.title)}>
               View certificate
             </a>
             {cert.verify && (
@@ -121,7 +124,15 @@ function FolderPanel({ cert }: { cert: Cert }) {
             return (
               <motion.li key={c.title} variants={fadeUp}>
                 {c.file ? (
-                  <motion.a href={c.file} target="_blank" rel="noreferrer" className="course has-file" whileHover={{ y: -3 }} transition={gentle}>
+                  <motion.a
+                    href={c.file}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="course has-file"
+                    whileHover={{ y: -3 }}
+                    transition={gentle}
+                    onClick={(e) => onView(e, c.file!, c.title)}
+                  >
                     {body}
                   </motion.a>
                 ) : (
@@ -140,6 +151,14 @@ export default function Certifications() {
   const [showAll, setShowAll] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [openFolder, setOpenFolder] = useState<string | null>(null);
+  const [viewing, setViewing] = useState<ViewerDoc | null>(null);
+  const closeViewer = useCallback(() => setViewing(null), []);
+  // Plain clicks open the in-page viewer; modified clicks keep the browser's new-tab behaviour.
+  const onView: OnView = (e, file, title) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    setViewing({ file, title });
+  };
   const shown = showAll ? certifications : certifications.slice(0, 3);
 
   return (
@@ -169,7 +188,7 @@ export default function Certifications() {
               return (
                 <Fragment key={c.title}>
                   <FolderCard cert={c} index={i} open={open} onToggle={() => setOpenFolder(open ? null : c.title)} />
-                  <AnimatePresence>{open && <FolderPanel key={`${c.title}-panel`} cert={c} />}</AnimatePresence>
+                  <AnimatePresence>{open && <FolderPanel key={`${c.title}-panel`} cert={c} onView={onView} />}</AnimatePresence>
                 </Fragment>
               );
             }
@@ -184,6 +203,7 @@ export default function Certifications() {
                 className="cert-card"
                 onMouseEnter={() => setHovered(c.title)}
                 onMouseLeave={() => setHovered(null)}
+                onClick={(e) => onView(e, c.file, c.title)}
                 {...reveal(i)}
               >
                 <div className="cert-thumb">
@@ -212,6 +232,7 @@ export default function Certifications() {
           })}
         </AnimatePresence>
       </motion.div>
+      <CertViewer doc={viewing} onClose={closeViewer} />
     </section>
   );
 }

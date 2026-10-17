@@ -32,7 +32,7 @@ My personal portfolio, live at **[mukesh.chillflareinnovations.com](https://muke
 | Projects | Filterable project cards with a detail panel and GitHub links for public repos |
 | Achievements | Auto-scrolling strip of hackathon results |
 | Contact | Email form (opens your mail client) |
-| Certifications | Meta Front-End Developer professional certificate as a folder of its 9 courses, plus Infosys Springboard certificates (PDF) |
+| Certifications | Meta Front-End Developer professional certificate as a folder of its 9 courses, plus Infosys Springboard certificates; each opens in a pop-up viewer (pdf.js, loaded on demand) |
 
 ## <img src="https://api.iconify.design/lucide/sparkles.svg?color=%23FD853A" width="26" align="top" alt=""/> Animations
 
